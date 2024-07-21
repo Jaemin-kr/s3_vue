@@ -1,4 +1,4 @@
-name: Deploy Vue to S3
+name: client
 
 on:
   push:
@@ -6,31 +6,40 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Node.js 버전을 프로젝트에 맞게 설정하세요.
+          node-version: '21'  # 노드 21 버전을 사용
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./s3-cicd-project  # 작업할 디렉토리 설정
 
-      - name: Build Vue project
+      - name: Build
         run: npm run build
+        working-directory: ./s3-cicd-project  # 작업할 디렉토리 설정
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 # S3 버킷의 리전으로 변경
-
-      - name: Deploy to S3
+      - name: SHOW AWS CLI VERSION
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
         run: |
-          aws s3 sync dist/ s3://my-vue-project --delete
+          aws --version
+
+      - name: Sync Bucket
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
+        run: |
+          aws s3 sync \
+            --region us-east-1 \
+            ./s3-cicd-project/dist s3://my-vue-project \
+            --delete
