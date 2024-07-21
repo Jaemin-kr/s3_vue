@@ -1,0 +1,55 @@
+# Node.js 관련 파일
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 디렉토리별 npm 로컬 설치
+.npm/
+
+# 환경 설정 파일
+.env.local
+.env.*.local
+
+# 빌드 출력 디렉토리
+dist/
+build/
+
+# 로그 파일
+logs/
+*.log
+*.log.*
+
+# OS 특정 파일들
+.DS_Store
+Thumbs.db
+
+# IDE/편집기 관련 파일
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Windows 관련 파일
+desktop.ini
+
+# Vue.js 특화된 파일들
+.vuetify/
+.vite/
+.vuepress/
+.cache/
+
+# TypeScript 관련 파일들
+*.tsbuildinfo
+
+# 테스트 결과 파일들
+coverage/
+
+# CI/CD 관련 파일들
+.ci/
+
+# 기타 특정 파일들
+*.local
+*.swo
+*.swp
+*~
