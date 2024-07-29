@@ -20,7 +20,7 @@ h1 {
 img {
   display: block;
   margin: 0 auto;
-  width: 75%;
+  max-width: 70%;
   height: auto;
 }
 </style>
